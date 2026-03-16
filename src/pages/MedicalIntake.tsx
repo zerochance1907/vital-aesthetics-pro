@@ -46,7 +46,7 @@ export default function MedicalIntake() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] justify-center p-4 py-10 animate-fade-in">
+    <div className="flex min-h-screen justify-center p-4 pt-24 pb-10 animate-fade-in">
       <div className="w-full max-w-xl space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-navy">Medical Intake Form</h1>
