@@ -44,21 +44,25 @@ export default function Admin() {
   return (
     <div className="flex min-h-screen pt-16">
       {/* Sidebar */}
-      <aside className="hidden md:flex w-56 shrink-0 flex-col border-r bg-card p-4 gap-1">
-        <h2 className="px-3 py-2 font-display text-sm font-bold text-navy">Admin Panel</h2>
+      <aside className="hidden md:flex w-56 shrink-0 flex-col border-r border-border bg-card p-4 gap-1">
+        <h2 className="px-3 py-2 font-display text-sm font-medium text-foreground">Admin Panel</h2>
         {tabs.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${tab === t.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>
+            className={`flex items-center gap-2 rounded-[6px] px-3 py-2 text-sm font-body font-light transition-colors duration-300 ${
+              tab === t.id
+                ? "bg-muted text-primary border-l-[3px] border-l-primary pl-[9px]"
+                : "text-muted-foreground hover:bg-muted"
+            }`}>
             <t.icon className="h-4 w-4" /> {t.label}
           </button>
         ))}
       </aside>
 
       {/* Mobile tabs */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex border-t bg-card">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex border-t border-border bg-card">
         {tabs.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`flex-1 flex flex-col items-center gap-0.5 py-2 text-[10px] ${tab === t.id ? "text-primary" : "text-muted-foreground"}`}>
+            className={`flex-1 flex flex-col items-center gap-0.5 py-2 text-[10px] font-body transition-colors duration-300 ${tab === t.id ? "text-primary" : "text-muted-foreground"}`}>
             <t.icon className="h-4 w-4" /> {t.label}
           </button>
         ))}
@@ -68,7 +72,7 @@ export default function Admin() {
       <div className="flex-1 p-6 md:p-10 animate-fade-in">
         {tab === "overview" && (
           <div>
-            <h1 className="text-2xl font-bold text-navy">Dashboard Overview</h1>
+            <h1 className="font-display text-2xl font-medium text-foreground">Dashboard Overview</h1>
             <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
               <StatCard label="Total Patients" value={patients.length} icon={Users} />
               <StatCard label="Pending Review" value={pending.length} icon={Clock} />
@@ -80,19 +84,19 @@ export default function Admin() {
 
         {tab === "pending" && (
           <div>
-            <h1 className="text-2xl font-bold text-navy">Pending Patients</h1>
-            <p className="mt-1 text-muted-foreground">{pending.length} patients awaiting review</p>
+            <h1 className="font-display text-2xl font-medium text-foreground">Pending Patients</h1>
+            <p className="mt-1 text-muted-foreground font-body font-light">{pending.length} patients awaiting review</p>
             <div className="mt-6 space-y-3">
-              {pending.length === 0 && <p className="text-muted-foreground text-sm">No pending patients.</p>}
+              {pending.length === 0 && <p className="text-muted-foreground text-sm font-body font-light">No pending patients.</p>}
               {pending.map(p => (
-                <div key={p.email} className="flex items-center justify-between rounded-lg border bg-card p-4">
+                <div key={p.email} className="flex items-center justify-between rounded-xl border border-border bg-card p-4 transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md">
                   <div>
-                    <p className="font-medium text-navy">{p.firstName} {p.lastName}</p>
-                    <p className="text-sm text-muted-foreground">{p.email}</p>
+                    <p className="font-body font-medium text-foreground">{p.firstName} {p.lastName}</p>
+                    <p className="text-sm text-muted-foreground font-body font-light">{p.email}</p>
                   </div>
                   <div className="flex gap-2">
-                    <Button size="sm" onClick={() => handleApprove(p.email)}>Approve</Button>
-                    <Button size="sm" variant="destructive" onClick={() => handleReject(p.email)}>Reject</Button>
+                    <Button size="sm" onClick={() => handleApprove(p.email)}>APPROVE</Button>
+                    <Button size="sm" variant="destructive" onClick={() => handleReject(p.email)}>REJECT</Button>
                   </div>
                 </div>
               ))}
@@ -102,29 +106,29 @@ export default function Admin() {
 
         {tab === "all" && (
           <div>
-            <h1 className="text-2xl font-bold text-navy">All Patients</h1>
-            <div className="mt-6 overflow-x-auto rounded-lg border">
+            <h1 className="font-display text-2xl font-medium text-foreground">All Patients</h1>
+            <div className="mt-6 overflow-x-auto rounded-xl border border-border">
               <table className="w-full text-sm">
                 <thead className="bg-muted">
                   <tr>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Name</th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Email</th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Actions</th>
+                    <th className="px-4 py-3 text-left font-body font-light text-muted-foreground">Name</th>
+                    <th className="px-4 py-3 text-left font-body font-light text-muted-foreground">Email</th>
+                    <th className="px-4 py-3 text-left font-body font-light text-muted-foreground">Status</th>
+                    <th className="px-4 py-3 text-left font-body font-light text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {patients.map(p => (
-                    <tr key={p.email} className="border-t">
-                      <td className="px-4 py-3 font-medium text-navy">{p.firstName} {p.lastName}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{p.email}</td>
+                    <tr key={p.email} className="border-t border-border">
+                      <td className="px-4 py-3 font-body font-medium text-foreground">{p.firstName} {p.lastName}</td>
+                      <td className="px-4 py-3 text-muted-foreground font-body font-light">{p.email}</td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${p.status === "approved" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"}`}>
+                        <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-body font-light ${p.status === "approved" ? "bg-primary/10 text-primary" : "bg-warning/10 text-warning"}`}>
                           {p.status}
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        {p.status === "pending" && <Button size="sm" variant="outline" onClick={() => handleApprove(p.email)}>Approve</Button>}
+                        {p.status === "pending" && <Button size="sm" variant="outline" onClick={() => handleApprove(p.email)}>APPROVE</Button>}
                       </td>
                     </tr>
                   ))}
@@ -136,15 +140,15 @@ export default function Admin() {
 
         {tab === "orders" && (
           <div>
-            <h1 className="text-2xl font-bold text-navy">Orders</h1>
-            <p className="mt-4 text-muted-foreground text-sm">No orders yet.</p>
+            <h1 className="font-display text-2xl font-medium text-foreground">Orders</h1>
+            <p className="mt-4 text-muted-foreground text-sm font-body font-light">No orders yet.</p>
           </div>
         )}
 
         {tab === "appointments" && (
           <div>
-            <h1 className="text-2xl font-bold text-navy">Appointments</h1>
-            <p className="mt-4 text-muted-foreground text-sm">No appointments yet.</p>
+            <h1 className="font-display text-2xl font-medium text-foreground">Appointments</h1>
+            <p className="mt-4 text-muted-foreground text-sm font-body font-light">No appointments yet.</p>
           </div>
         )}
       </div>
@@ -154,12 +158,12 @@ export default function Admin() {
 
 function StatCard({ label, value, icon: Icon }: { label: string; value: number; icon: React.ElementType }) {
   return (
-    <div className="rounded-lg border bg-card p-4">
+    <div className="rounded-xl border border-border bg-card p-4 transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md">
       <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">{label}</span>
+        <span className="text-sm text-muted-foreground font-body font-light">{label}</span>
         <Icon className="h-5 w-5 text-primary" />
       </div>
-      <p className="mt-2 text-2xl font-bold text-navy">{value}</p>
+      <p className="mt-2 font-display text-2xl font-medium text-foreground">{value}</p>
     </div>
   );
 }

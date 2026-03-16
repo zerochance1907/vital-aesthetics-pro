@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import Marketplace from "./pages/Marketplace";
 import BookAppointment from "./pages/BookAppointment";
 import Admin from "./pages/Admin";
+import PhysicianLogin from "./pages/PhysicianLogin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/marketplace" element={<Marketplace />} />
               <Route path="/book-appointment" element={<BookAppointment />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/auth/physician" element={<PhysicianLogin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <DemoPanel />
