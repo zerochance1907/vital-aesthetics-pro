@@ -83,7 +83,7 @@ export default function Dashboard() {
   const initial = displayName.charAt(0).toUpperCase();
 
   return (
-    <div className="container max-w-5xl py-10 animate-fade-in">
+    <div className="container max-w-5xl pt-24 pb-10 animate-fade-in">
       {/* Header with avatar */}
       <div className="flex items-start justify-between mb-8">
         <div>
