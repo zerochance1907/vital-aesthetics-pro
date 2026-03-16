@@ -42,7 +42,7 @@ export default function Admin() {
   ];
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)]">
+    <div className="flex min-h-screen pt-16">
       {/* Sidebar */}
       <aside className="hidden md:flex w-56 shrink-0 flex-col border-r bg-card p-4 gap-1">
         <h2 className="px-3 py-2 font-display text-sm font-bold text-navy">Admin Panel</h2>

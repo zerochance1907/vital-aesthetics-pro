@@ -30,7 +30,7 @@ export default function MedicalIntake() {
 
   if (submitted) {
     return (
-      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-4 animate-fade-in">
+      <div className="flex min-h-screen items-center justify-center p-4 pt-20 animate-fade-in">
         <div className="max-w-lg text-center space-y-4 rounded-lg border bg-card p-8 shadow-sm">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-success/10">
             <CheckCircle2 className="h-12 w-12 text-success animate-fade-in" />
@@ -46,7 +46,7 @@ export default function MedicalIntake() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] justify-center p-4 py-10 animate-fade-in">
+    <div className="flex min-h-screen justify-center p-4 pt-24 pb-10 animate-fade-in">
       <div className="w-full max-w-xl space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-navy">Medical Intake Form</h1>

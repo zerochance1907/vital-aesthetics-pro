@@ -48,7 +48,7 @@ export default function Marketplace() {
 
   return (
     <TooltipProvider>
-      <div className="container py-10 animate-fade-in">
+      <div className="container pt-24 pb-10 animate-fade-in">
         {isPending && (
           <div className="mb-8 flex items-center gap-3 rounded-lg bg-amber-50 border border-amber-200 px-5 py-4 text-sm font-medium text-amber-800">
             <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600" />

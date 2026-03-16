@@ -92,7 +92,7 @@ export default function BookAppointment() {
 
   if (confirmed) {
     return (
-      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-4 animate-fade-in">
+      <div className="flex min-h-screen items-center justify-center p-4 pt-20 animate-fade-in">
         <div className="max-w-lg text-center space-y-4 rounded-lg border bg-card p-8 shadow-sm">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100">
             <CheckCircle2 className="h-12 w-12 text-emerald-600" />
@@ -106,7 +106,7 @@ export default function BookAppointment() {
   }
 
   return (
-    <div className="container max-w-4xl py-10 animate-fade-in">
+    <div className="container max-w-4xl pt-24 pb-10 animate-fade-in">
       <h1 className="text-3xl font-bold text-navy">Book a Consultation</h1>
       <p className="mt-1 text-muted-foreground">Select a service, date, and time to schedule</p>
 
