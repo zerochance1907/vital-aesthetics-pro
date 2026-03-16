@@ -12,12 +12,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 const categories = ["All Products", "Aesthetic Treatments", "Weight Management", "Wellness Products", "Skincare", "IV Therapy"];
 
-const categoryStyles: Record<string, { gradient: string; icon: React.ElementType }> = {
-  "Weight Management": { gradient: "from-emerald-600 via-teal-500 to-cyan-500", icon: Leaf },
-  "Aesthetic Treatments": { gradient: "from-purple-600 via-fuchsia-500 to-pink-500", icon: Sparkles },
-  "Wellness Products": { gradient: "from-blue-600 via-cyan-500 to-sky-400", icon: Heart },
-  "Skincare": { gradient: "from-orange-400 via-rose-400 to-pink-400", icon: Droplets },
-  "IV Therapy": { gradient: "from-indigo-500 via-violet-500 to-purple-400", icon: Syringe },
+const categoryIcons: Record<string, React.ElementType> = {
+  "Weight Management": Leaf,
+  "Aesthetic Treatments": Sparkles,
+  "Wellness Products": Heart,
+  "Skincare": Droplets,
+  "IV Therapy": Syringe,
 };
 
 const products = [
@@ -50,16 +50,16 @@ export default function Marketplace() {
     <TooltipProvider>
       <div className="container pt-24 pb-10 animate-fade-in">
         {isPending && (
-          <div className="mb-8 flex items-center gap-3 rounded-lg bg-amber-50 border border-amber-200 px-5 py-4 text-sm font-medium text-amber-800">
-            <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600" />
+          <div className="mb-8 flex items-center gap-3 rounded-xl bg-warning/10 border border-warning/20 px-5 py-4 text-sm font-body font-light text-warning">
+            <AlertTriangle className="h-5 w-5 shrink-0" />
             🔒 Marketplace access requires physician approval. Please complete your medical intake form.
           </div>
         )}
 
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-navy">Marketplace</h1>
-            <p className="mt-1 text-muted-foreground">Physician-approved treatments and products</p>
+            <h1 className="font-display text-3xl font-medium text-foreground">Marketplace</h1>
+            <p className="mt-1 text-muted-foreground font-body font-light">Physician-approved treatments and products</p>
           </div>
           <Button variant="outline" className="relative h-11" onClick={() => setDrawerOpen(true)}>
             <ShoppingCart className="h-5 w-5" />
@@ -69,7 +69,6 @@ export default function Marketplace() {
           </Button>
         </div>
 
-        {/* Filters */}
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="relative flex-1 max-w-xs">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -90,7 +89,7 @@ export default function Marketplace() {
             <nav className="flex flex-row gap-2 overflow-x-auto lg:flex-col lg:gap-1">
               {categories.map(cat => (
                 <button key={cat} onClick={() => setActiveCategory(cat)}
-                  className={`whitespace-nowrap rounded-md px-4 py-2 text-left text-sm font-medium transition-colors ${activeCategory === cat ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>
+                  className={`whitespace-nowrap rounded-[6px] px-4 py-2 text-left text-sm font-body font-light transition-colors duration-300 ${activeCategory === cat ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>
                   {cat}
                 </button>
               ))}
@@ -99,25 +98,22 @@ export default function Marketplace() {
 
           <div className="flex-1 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {filtered.map(product => {
-              const style = categoryStyles[product.category] || categoryStyles["Wellness Products"];
-              const IconComp = style.icon;
+              const IconComp = categoryIcons[product.category] || Heart;
               return (
-                <div key={product.name} className={`flex flex-col rounded-lg border bg-card overflow-hidden transition-all duration-200 ${isPending ? "opacity-50" : "hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]"}`}>
-                  <div className={`h-40 bg-gradient-to-br ${style.gradient} flex items-center justify-center relative`}>
-                    <IconComp className="h-16 w-16 text-white/30" />
-                    <span className="absolute bottom-3 left-4 text-white/90 text-xs font-semibold tracking-wide uppercase">{product.category}</span>
+                <div key={product.name} className={`flex flex-col rounded-xl border border-border bg-card overflow-hidden transition-all duration-300 ${isPending ? "opacity-50" : "hover:shadow-md hover:-translate-y-[3px]"}`}>
+                  <div className="h-40 bg-muted flex items-center justify-center relative">
+                    <IconComp className="h-16 w-16 text-primary/30" />
+                    <span className="absolute bottom-3 left-4 text-muted-foreground text-xs font-body font-light tracking-wide uppercase">{product.category}</span>
                   </div>
                   <div className="flex flex-1 flex-col p-5">
-                    <h3 className="font-display text-base font-semibold text-navy">{product.name}</h3>
-                    <p className="mt-1 flex-1 text-sm text-muted-foreground">{product.desc}</p>
+                    <h3 className="font-display text-base font-medium text-foreground">{product.name}</h3>
+                    <p className="mt-1 flex-1 text-sm text-muted-foreground font-body font-light">{product.desc}</p>
                     <div className="mt-4 flex items-center justify-between">
-                      <span className="text-xl font-bold text-navy">${product.price}</span>
+                      <span className="font-display text-xl font-medium text-foreground">${product.price}</span>
                       {isPending ? (
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <span>
-                              <Button size="sm" disabled className="h-11">Add to Cart</Button>
-                            </span>
+                            <span><Button size="sm" disabled className="h-11">ADD TO CART</Button></span>
                           </TooltipTrigger>
                           <TooltipContent>Physician approval required</TooltipContent>
                         </Tooltip>
@@ -125,7 +121,7 @@ export default function Marketplace() {
                         <Button size="sm" className="h-11" onClick={() => {
                           addItem(product.name, product.price);
                           toast.success(`${product.name} added to cart`);
-                        }}>Add to Cart</Button>
+                        }}>ADD TO CART</Button>
                       )}
                     </div>
                   </div>
@@ -135,34 +131,33 @@ export default function Marketplace() {
           </div>
         </div>
 
-        {/* Cart Drawer */}
         <Sheet open={isDrawerOpen} onOpenChange={setDrawerOpen}>
           <SheetContent className="flex flex-col">
             <SheetHeader>
               <SheetTitle>Your Cart ({itemCount})</SheetTitle>
             </SheetHeader>
             {items.length === 0 ? (
-              <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">Your cart is empty</div>
+              <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm font-body font-light">Your cart is empty</div>
             ) : (
               <>
                 <div className="flex-1 overflow-y-auto space-y-4 mt-4">
                   {items.map(item => (
-                    <div key={item.name} className="flex items-center gap-3 rounded-lg border p-3">
+                    <div key={item.name} className="flex items-center gap-3 rounded-xl border border-border p-3">
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-navy truncate">{item.name}</p>
-                        <p className="text-sm text-muted-foreground">${item.price}</p>
+                        <p className="text-sm font-body font-medium text-foreground truncate">{item.name}</p>
+                        <p className="text-sm text-muted-foreground font-light">${item.price}</p>
                       </div>
                       <div className="flex items-center gap-1">
-                        <button onClick={() => updateQuantity(item.name, item.quantity - 1)} className="rounded p-1 hover:bg-muted"><Minus className="h-3 w-3" /></button>
-                        <span className="w-6 text-center text-sm font-medium">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.name, item.quantity + 1)} className="rounded p-1 hover:bg-muted"><Plus className="h-3 w-3" /></button>
+                        <button onClick={() => updateQuantity(item.name, item.quantity - 1)} className="rounded p-1 hover:bg-muted transition-colors duration-300"><Minus className="h-3 w-3" /></button>
+                        <span className="w-6 text-center text-sm font-body font-medium">{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.name, item.quantity + 1)} className="rounded p-1 hover:bg-muted transition-colors duration-300"><Plus className="h-3 w-3" /></button>
                       </div>
-                      <button onClick={() => removeItem(item.name)} className="rounded p-1 text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4" /></button>
+                      <button onClick={() => removeItem(item.name)} className="rounded p-1 text-destructive hover:bg-destructive/10 transition-colors duration-300"><Trash2 className="h-4 w-4" /></button>
                     </div>
                   ))}
                 </div>
-                <div className="border-t pt-4 space-y-3">
-                  <div className="flex items-center justify-between font-semibold text-navy">
+                <div className="border-t border-border pt-4 space-y-3">
+                  <div className="flex items-center justify-between font-body font-medium text-foreground">
                     <span>Subtotal</span>
                     <span>${subtotal.toFixed(2)}</span>
                   </div>
@@ -170,7 +165,7 @@ export default function Marketplace() {
                     if (isPending) return;
                     toast.success("Checkout coming soon!");
                   }}>
-                    {isPending ? "Approval Required" : "Checkout"}
+                    {isPending ? "APPROVAL REQUIRED" : "CHECKOUT"}
                   </Button>
                 </div>
               </>
