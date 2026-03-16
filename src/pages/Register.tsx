@@ -52,7 +52,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-4 animate-fade-in">
+    <div className="flex min-h-screen items-center justify-center p-4 pt-20 animate-fade-in">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-navy">Create Account</h1>
