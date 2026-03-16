@@ -106,7 +106,7 @@ export default function BookAppointment() {
   }
 
   return (
-    <div className="container max-w-4xl py-10 animate-fade-in">
+    <div className="container max-w-4xl pt-24 pb-10 animate-fade-in">
       <h1 className="text-3xl font-bold text-navy">Book a Consultation</h1>
       <p className="mt-1 text-muted-foreground">Select a service, date, and time to schedule</p>
 
