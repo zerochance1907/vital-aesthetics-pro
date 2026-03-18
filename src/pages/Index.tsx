@@ -81,24 +81,28 @@ export default function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card dark:bg-[hsl(40,8%,10%)] py-10">
+      <footer className="border-t border-border bg-[hsl(40,6%,10%)] py-10">
         <div className="container px-4">
-          <div className="grid gap-8 grid-cols-2 md:grid-cols-4">
+          <div className="grid gap-8 grid-cols-2 md:grid-cols-5">
             <div className="col-span-2 md:col-span-1">
-              <h4 className="font-body text-lg font-medium text-foreground">Med<span className="text-primary">Aesthetics</span></h4>
-              <p className="mt-2 text-sm text-muted-foreground font-light">Physician-approved aesthetic and wellness treatments delivered with clinical precision.</p>
+              <h4 className="font-body text-lg font-medium text-white">Harmony <span className="text-primary">Medical</span></h4>
+              <p className="mt-2 text-sm text-white/60 font-light">Physician-approved aesthetic and wellness treatments delivered with clinical precision.</p>
+              <div className="mt-4 flex items-center gap-2 rounded-[6px] border border-white/10 bg-white/5 px-3 py-2">
+                <span className="text-xs">🔒</span>
+                <span className="text-[10px] text-white/50 font-body font-light">HIPAA Compliant</span>
+              </div>
             </div>
             <div>
-              <h5 className="font-display text-sm font-medium text-foreground">Quick Links</h5>
-              <ul className="mt-3 space-y-2 text-sm text-muted-foreground font-light">
+              <h5 className="font-display text-sm font-medium text-white">Quick Links</h5>
+              <ul className="mt-3 space-y-2 text-sm text-white/60 font-light">
                 <li><Link to="/register" className="hover:text-primary transition-colors duration-300">Create Account</Link></li>
                 <li><Link to="/login" className="hover:text-primary transition-colors duration-300">Sign In</Link></li>
                 <li><Link to="/register" className="hover:text-primary transition-colors duration-300">Marketplace</Link></li>
               </ul>
             </div>
             <div>
-              <h5 className="font-display text-sm font-medium text-foreground">Services</h5>
-              <ul className="mt-3 space-y-2 text-sm text-muted-foreground font-light">
+              <h5 className="font-display text-sm font-medium text-white">Services</h5>
+              <ul className="mt-3 space-y-2 text-sm text-white/60 font-light">
                 <li>Aesthetic Treatments</li>
                 <li>Weight Management</li>
                 <li>Wellness Programs</li>
@@ -106,23 +110,24 @@ export default function Index() {
               </ul>
             </div>
             <div>
-              <h5 className="font-display text-sm font-medium text-foreground">Legal</h5>
-              <ul className="mt-3 space-y-2 text-sm text-muted-foreground font-light">
+              <h5 className="font-display text-sm font-medium text-white">Legal</h5>
+              <ul className="mt-3 space-y-2 text-sm text-white/60 font-light">
                 <li><Link to="/privacy" className="hover:text-primary transition-colors duration-300">Privacy Policy</Link></li>
                 <li><Link to="/terms" className="hover:text-primary transition-colors duration-300">Terms of Service</Link></li>
+                <li><span className="cursor-default">Cookie Policy</span></li>
               </ul>
             </div>
             <div>
-              <h5 className="font-display text-sm font-medium text-foreground">Contact</h5>
-              <ul className="mt-3 space-y-2 text-sm text-muted-foreground font-light">
-                <li>support@medaesthetics.com</li>
+              <h5 className="font-display text-sm font-medium text-white">Contact</h5>
+              <ul className="mt-3 space-y-2 text-sm text-white/60 font-light">
+                <li>support@harmonymedicalaesthetics.com</li>
                 <li>1-800-MED-AEST</li>
                 <li>Mon-Fri 9AM-6PM EST</li>
               </ul>
             </div>
           </div>
-          <div className="mt-8 border-t border-border pt-6 text-center text-xs text-muted-foreground font-light">
-            © {new Date().getFullYear()} MedAesthetics. All rights reserved.
+          <div className="mt-8 border-t border-white/10 pt-6 text-center text-xs text-white/40 font-light">
+            © {new Date().getFullYear()} Harmony Medical Aesthetics. All rights reserved.
           </div>
         </div>
       </footer>
