@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNotifications } from "@/contexts/NotificationContext";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ChevronLeft, ChevronRight, CalendarDays, Clock, CreditCard } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const services = [
   { name: "Initial Physician Consultation", price: "Free", priceNum: 0 },
@@ -52,12 +59,20 @@ function SimpleCalendar({ selected, onSelect, monthOffset, setMonthOffset }: { s
   );
 }
 
+function generateICS(service: string, date: string, time: string): string {
+  const now = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  return `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${now}\nSUMMARY:${service} - Harmony Medical Aesthetics\nDESCRIPTION:Appointment at ${time} on ${date}\nLOCATION:Harmony Medical Aesthetics\nEND:VEVENT\nEND:VCALENDAR`;
+}
+
 export default function BookAppointment() {
   const { user } = useAuth();
+  const { addNotification } = useNotifications();
+  const navigate = useNavigate();
   const [service, setService] = useState<string | null>(null);
   const [date, setDate] = useState<number | null>(null);
   const [time, setTime] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [monthOffset, setMonthOffset] = useState(0);
 
   if (!user) return <Navigate to="/login" />;
@@ -67,16 +82,30 @@ export default function BookAppointment() {
   const viewingMonthName = viewingDate.toLocaleString("default", { month: "long" });
   const viewingYear = viewingDate.getFullYear();
   const selectedService = services.find(s => s.name === service);
+  const dateStr = date ? `${date} ${viewingMonthName} ${viewingYear}` : "";
 
   const handleConfirm = () => {
-    const booking = { id: refNumber, service, date: `${date} ${viewingMonthName} ${viewingYear}`, time, status: "Upcoming", createdAt: new Date().toISOString() };
+    const booking = { id: refNumber, service, date: dateStr, time, status: "upcoming", createdAt: new Date().toISOString() };
     try {
       const existing = JSON.parse(localStorage.getItem("appointments") || "[]");
       existing.push(booking);
       localStorage.setItem("appointments", JSON.stringify(existing));
     } catch { localStorage.setItem("appointments", JSON.stringify([booking])); }
+    addNotification({ type: "appointment_confirmed", title: "Appointment Confirmed", message: `${service} on ${dateStr} at ${time}` });
     setConfirmed(true);
+    setShowConfirmModal(false);
     toast.success("Appointment booked successfully!");
+  };
+
+  const downloadICS = () => {
+    if (!service || !dateStr || !time) return;
+    const blob = new Blob([generateICS(service, dateStr, time)], { type: "text/calendar" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `appointment-${refNumber}.ics`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   if (confirmed) {
@@ -88,7 +117,15 @@ export default function BookAppointment() {
           </div>
           <h2 className="font-display text-2xl font-medium text-foreground">Appointment Confirmed!</h2>
           <p className="text-sm text-muted-foreground font-body font-light">Booking Reference: <span className="font-mono font-medium text-foreground">{refNumber}</span></p>
-          <p className="text-muted-foreground font-body font-light">A confirmation has been sent to your email.</p>
+          <div className="rounded-lg border border-border bg-muted/50 p-4 text-sm text-left space-y-1">
+            <p className="font-body font-light text-muted-foreground">Service: <span className="text-foreground">{service}</span></p>
+            <p className="font-body font-light text-muted-foreground">Date: <span className="text-foreground">{dateStr}</span></p>
+            <p className="font-body font-light text-muted-foreground">Time: <span className="text-foreground">{time}</span></p>
+          </div>
+          <div className="flex gap-3">
+            <Button onClick={downloadICS} variant="outline" className="flex-1">Add to Calendar</Button>
+            <Button onClick={() => navigate("/appointments")} className="flex-1">VIEW APPOINTMENTS</Button>
+          </div>
         </div>
       </div>
     );
@@ -115,11 +152,6 @@ export default function BookAppointment() {
                 </button>
               ))}
             </div>
-            {service && !date && (
-              <Button className="mt-4 h-11" onClick={() => document.getElementById('step2')?.scrollIntoView({ behavior: 'smooth' })}>
-                NEXT: SELECT DATE →
-              </Button>
-            )}
           </div>
 
           <div id="step2" className="rounded-xl border border-border bg-card p-6">
@@ -128,11 +160,6 @@ export default function BookAppointment() {
             <div className="mt-4 max-w-xs">
               <SimpleCalendar selected={date} onSelect={setDate} monthOffset={monthOffset} setMonthOffset={setMonthOffset} />
             </div>
-            {date && !time && (
-              <Button className="mt-4 h-11" onClick={() => document.getElementById('step3')?.scrollIntoView({ behavior: 'smooth' })}>
-                NEXT: SELECT TIME →
-              </Button>
-            )}
           </div>
 
           <div id="step3" className="rounded-xl border border-border bg-card p-6">
@@ -180,7 +207,7 @@ export default function BookAppointment() {
             </div>
             <div className="border-t border-border pt-4">
               {service && date && time ? (
-                <Button className="w-full h-11" onClick={handleConfirm}>CONFIRM BOOKING</Button>
+                <Button className="w-full h-11" onClick={() => setShowConfirmModal(true)}>CONFIRM BOOKING</Button>
               ) : (
                 <p className="text-xs text-center text-muted-foreground font-body font-light">Select service, date and time to book</p>
               )}
@@ -188,6 +215,28 @@ export default function BookAppointment() {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-xl">Confirm Appointment</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 text-sm">
+            <div className="rounded-lg border border-border bg-muted/50 p-4 space-y-2">
+              <p className="font-body font-light text-muted-foreground">Service: <span className="text-foreground font-medium">{service}</span></p>
+              <p className="font-body font-light text-muted-foreground">Date: <span className="text-foreground font-medium">{dateStr}</span></p>
+              <p className="font-body font-light text-muted-foreground">Time: <span className="text-foreground font-medium">{time}</span></p>
+              <p className="font-body font-light text-muted-foreground">Total: <span className="text-foreground font-medium">{selectedService?.price}</span></p>
+            </div>
+            <p className="text-xs text-muted-foreground font-body font-light">A confirmation email will be sent to {user.email}</p>
+          </div>
+          <div className="flex gap-3 mt-2">
+            <Button variant="outline" className="flex-1" onClick={() => setShowConfirmModal(false)}>Cancel</Button>
+            <Button className="flex-1" onClick={handleConfirm}>CONFIRM</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

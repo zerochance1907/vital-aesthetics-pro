@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import { useNotifications } from "@/contexts/NotificationContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -33,7 +34,9 @@ const products = [
 
 export default function Marketplace() {
   const { user } = useAuth();
-  const { items, itemCount, subtotal, addItem, removeItem, updateQuantity, isDrawerOpen, setDrawerOpen } = useCart();
+  const { items, itemCount, subtotal, addItem, removeItem, updateQuantity, clearCart, isDrawerOpen, setDrawerOpen } = useCart();
+  const { addNotification } = useNotifications();
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("All Products");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
@@ -45,6 +48,35 @@ export default function Marketplace() {
   if (search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
   if (sort === "low") filtered = [...filtered].sort((a, b) => a.price - b.price);
   else if (sort === "high") filtered = [...filtered].sort((a, b) => b.price - a.price);
+
+  const handleCheckout = () => {
+    if (isPending || items.length === 0) return;
+    const orderId = `ORD-${Date.now().toString(36).toUpperCase()}`;
+    const order = {
+      id: orderId,
+      items: items.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
+      total: subtotal,
+      date: new Date().toLocaleDateString(),
+      step: 0,
+      status: "Processing",
+      patientEmail: user.email,
+      patientName: `${user.firstName} ${user.lastName}`,
+      paymentMethod: "Card ending ****4242",
+      estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem("orders") || "[]");
+      existing.push(order);
+      localStorage.setItem("orders", JSON.stringify(existing));
+    } catch {
+      localStorage.setItem("orders", JSON.stringify([order]));
+    }
+    addNotification({ type: "order_placed", title: "Order Placed", message: `Order ${orderId} has been placed — $${subtotal.toFixed(2)}` });
+    clearCart();
+    setDrawerOpen(false);
+    toast.success("Order placed successfully!");
+    navigate("/orders");
+  };
 
   return (
     <TooltipProvider>
@@ -168,10 +200,7 @@ export default function Marketplace() {
                     <span>Subtotal</span>
                     <span>${subtotal.toFixed(2)}</span>
                   </div>
-                  <Button className="w-full h-11" size="lg" disabled={isPending} onClick={() => {
-                    if (isPending) return;
-                    toast.success("Checkout coming soon!");
-                  }}>
+                  <Button className="w-full h-11" size="lg" disabled={isPending} onClick={handleCheckout}>
                     {isPending ? "APPROVAL REQUIRED" : "CHECKOUT"}
                   </Button>
                 </div>

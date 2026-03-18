@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { ClipboardList, CalendarDays, ShoppingBag, Lock, Activity, Package, FileText, CheckCircle2, User, LogOut, ChevronDown } from "lucide-react";
+import { useNotifications } from "@/contexts/NotificationContext";
+import { ClipboardList, CalendarDays, ShoppingBag, Lock, Activity, Package, FileText, CheckCircle2, User, LogOut, ChevronDown, Receipt, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
+  const { unreadCount } = useNotifications();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -109,6 +111,13 @@ export default function Dashboard() {
                 </Link>
                 <Link to="/appointments" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-300">
                   <CalendarDays className="h-4 w-4" /> My Appointments
+                </Link>
+                <Link to="/transactions" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-300">
+                  <Receipt className="h-4 w-4" /> Transactions
+                </Link>
+                <Link to="/notifications" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-300">
+                  <Bell className="h-4 w-4" /> Notifications
+                  {unreadCount > 0 && <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white">{unreadCount}</span>}
                 </Link>
               </div>
               <div className="border-t border-border py-1">
