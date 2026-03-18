@@ -55,7 +55,7 @@ function saveUsers(users: StoredUser[]) {
 function seedDemoAccounts() {
   const users = getStoredUsers();
   const demoAccounts: StoredUser[] = [
-    { firstName: "New", lastName: "Patient", email: "new@demo.com", password: "demo123", status: "pending" },
+    { firstName: "Jordan", lastName: "Lee", email: "new@demo.com", password: "demo123", status: "pending" },
     { firstName: "Sarah", lastName: "Johnson", email: "approved@demo.com", password: "demo123", status: "approved" },
   ];
   let changed = false;
