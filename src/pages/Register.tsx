@@ -129,6 +129,11 @@ export default function Register() {
           <Button type="submit" className="w-full" size="lg">CREATE ACCOUNT</Button>
         </form>
 
+        <div className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-xs text-muted-foreground font-body font-light">
+          <span>🔒</span>
+          <span>Your medical information is protected under HIPAA privacy standards.</span>
+        </div>
+
         <p className="text-center text-sm text-muted-foreground font-body font-light">
           Already have an account?{" "}
           <Link to="/login" className="font-body font-medium text-primary hover:underline">Login</Link>

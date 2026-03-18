@@ -101,9 +101,16 @@ export default function Marketplace() {
               const IconComp = categoryIcons[product.category] || Heart;
               return (
                 <div key={product.name} className={`flex flex-col rounded-xl border border-border bg-card overflow-hidden transition-all duration-300 ${isPending ? "opacity-50" : "hover:shadow-md hover:-translate-y-[3px]"}`}>
-                  <div className="h-40 bg-muted flex items-center justify-center relative">
-                    <IconComp className="h-16 w-16 text-primary/30" />
-                    <span className="absolute bottom-3 left-4 text-muted-foreground text-xs font-body font-light tracking-wide uppercase">{product.category}</span>
+                  <div className="h-40 flex items-center justify-center relative" style={{
+                    background: product.category === "Weight Management" ? "linear-gradient(135deg, #064e3b, #065f46)"
+                      : product.category === "Aesthetic Treatments" ? "linear-gradient(135deg, #4c1d95, #6d28d9)"
+                      : product.category === "Wellness Products" ? "linear-gradient(135deg, #1e3a5f, #1d4ed8)"
+                      : product.category === "Skincare" ? "linear-gradient(135deg, #831843, #be185d)"
+                      : product.category === "IV Therapy" ? "linear-gradient(135deg, #1e1b4b, #3730a3)"
+                      : "linear-gradient(135deg, hsl(var(--muted)), hsl(var(--muted)))"
+                  }}>
+                    <IconComp className="h-20 w-20 text-white" />
+                    <span className="absolute top-3 left-3 rounded-full bg-white/20 px-3 py-0.5 text-[10px] font-body font-medium text-white uppercase tracking-wider backdrop-blur-sm">{product.category}</span>
                   </div>
                   <div className="flex flex-1 flex-col p-5">
                     <h3 className="font-display text-base font-medium text-foreground">{product.name}</h3>

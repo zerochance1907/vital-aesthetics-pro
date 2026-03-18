@@ -106,6 +106,13 @@ export default function Index() {
               </ul>
             </div>
             <div>
+              <h5 className="font-display text-sm font-medium text-foreground">Legal</h5>
+              <ul className="mt-3 space-y-2 text-sm text-muted-foreground font-light">
+                <li><Link to="/privacy" className="hover:text-primary transition-colors duration-300">Privacy Policy</Link></li>
+                <li><Link to="/terms" className="hover:text-primary transition-colors duration-300">Terms of Service</Link></li>
+              </ul>
+            </div>
+            <div>
               <h5 className="font-display text-sm font-medium text-foreground">Contact</h5>
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground font-light">
                 <li>support@medaesthetics.com</li>

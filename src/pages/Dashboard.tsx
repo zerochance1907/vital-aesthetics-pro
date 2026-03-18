@@ -104,10 +104,10 @@ export default function Dashboard() {
                 <Link to="/dashboard" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-300">
                   <User className="h-4 w-4" /> My Profile
                 </Link>
-                <Link to="/dashboard" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-300">
+                <Link to="/orders" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-300">
                   <Package className="h-4 w-4" /> My Orders
                 </Link>
-                <Link to="/dashboard" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-300">
+                <Link to="/appointments" onClick={() => setDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors duration-300">
                   <CalendarDays className="h-4 w-4" /> My Appointments
                 </Link>
               </div>
