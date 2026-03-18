@@ -15,7 +15,7 @@ export default function DemoPanel() {
           <h4 className="text-xs font-bold text-navy mb-3">Demo Accounts</h4>
           <div className="space-y-2.5 text-xs">
             <div className="rounded-md bg-muted p-2">
-              <p className="font-semibold text-foreground">New Patient</p>
+              <p className="font-semibold text-foreground">Jordan Lee (Pending)</p>
               <p className="text-muted-foreground">new@demo.com / demo123</p>
             </div>
             <div className="rounded-md bg-muted p-2">
